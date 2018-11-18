@@ -1,6 +1,6 @@
 # Variables
 SERVICE=api-gateway
-IMG_HUB?=registry.test.io/test
+IMG_HUB?=registry.test.io/api-gateway
 TAG?=latest
 # Version information
 VERSION=1.0.0
@@ -13,8 +13,6 @@ LD_FLAGS:=-X main.Version=$(VERSION) -X main.Revision=$(REVISION) -X main.Releas
 run:prepare build
 	@-docker service rm $(SERVICE)	
 	@docker service create --name $(SERVICE) --network devel -p 8080:8080 -e GRPC_GO_LOG_SEVERITY_LEVEL=INFO $(IMG_HUB)/$(SERVICE):$(TAG)
-	cd example/echo && make run
-	cd example/helloworld && make run
 
 prepare:
 	@go get google.golang.org/grpc
